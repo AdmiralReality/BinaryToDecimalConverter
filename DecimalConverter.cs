@@ -2,7 +2,7 @@
 
 public class DecimalConverter
 {
-    public int Convert(string binaryString)
+    public int Convert(string? binaryString)
     {
         if (!Validate(binaryString, out var error))
             throw new InvalidDataException(error);
@@ -10,13 +10,13 @@ public class DecimalConverter
         return ConvertInternal(binaryString);
     }
 
-    public bool TryConvert(string binaryString, out int result)
+    public bool TryConvert(string? binaryString, out int result)
     {
         result = 0;
         if (!Validate(binaryString, out _))
             return false;
 
-        result = ConvertInternal(binaryString);
+        result = ConvertInternal(binaryString!);
         return true;
     }
 
@@ -31,19 +31,19 @@ public class DecimalConverter
         return result;
     }
 
-    private bool Validate(string binaryString, out string? error)
+    private bool Validate(string? binaryString, out string? error)
     {
         error = null;
         if (binaryString is null || binaryString.Length == 0)
         {
-                error = "Can't convert null or empty string";
-                return false;
+            error = "Can't convert null or empty string";
+            return false;
         }
 
-        if (binaryString.Any(value => (byte)value is not 48 or 49))
+        if (binaryString.Any(value => (byte)value is not 48 and not 49))
         {
-                error = "Can't convert non-binary string";
-                return false;
+            error = "Can't convert non-binary string";
+            return false;
         }
 
         return true;
